@@ -2,9 +2,20 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import GameOverMessage from './GameOverMessage';
+import { Progress } from 'react-sweet-progress';
+import "react-sweet-progress/lib/style.css";
 
 class App extends Component {
-  state = {questionString: "", correctAnswerCount: 0, level: 1, timeRemaining: 0, showGameOverMessage: false, score: 0, highscore: 0, yourscore:0};
+  state = {
+    questionString: "", 
+    levelCorrectAnswerCount: 0, 
+    totalCorrectAnswerCount: 0,
+    level: 1, 
+    timeRemaining: 0, 
+    showGameOverMessage: false, 
+    score: 0, 
+    highscore: 0, 
+    yourscore:0};
   operators = ["+","-"];
   timerHandle = null;
 
@@ -48,15 +59,22 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.timeRemaining === 0 && prevState.timeRemaining > 0) {
-      this.resetScore();     
+      this.gameOver();     
     }
   }
 
-  resetScore = () => {
+  restart = () => {    
+    let answerElement = document.getElementById('txtAnswer');
+    answerElement.value = '';    
+    this.setState({timeRemaining: 0, levelCorrectAnswerCount: 0, score: 0, level: 1, showGameOverMessage: false });
+    answerElement.focus();
+  }
+
+  gameOver = () => {
     clearInterval(this.timerHandle);
     const highscore = this.state.score > this.state.highscore ? this.state.score : this.state.highscore;   
     const score = this.state.score; 
-    this.setState({timeRemaining: 0, correctAnswerCount: 0, showGameOverMessage: true, score: 0, yourscore: score, highscore: highscore, level: 1 });
+    this.setState({showGameOverMessage: true, yourscore: score, highscore: highscore });
   }
 
   handleAnswerKeyPress = (evt) => {    
@@ -67,29 +85,35 @@ class App extends Component {
       let answerElement = evt.target;      
       if (userAnswer === actualAnswer) {
         clearInterval(this.timerHandle);
-        let updatedCorrectAnswerCount = this.state.correctAnswerCount + 1;
+        let updatedCorrectAnswerCount = this.state.levelCorrectAnswerCount + 1;
         let level = this.state.level;
-        let updatedScore = this.state.level*5 + this.state.score + this.state.correctAnswerCount;        
+        let updatedScore = this.state.level*5 + this.state.score + this.state.levelCorrectAnswerCount;        
         if (updatedCorrectAnswerCount === 7) {
           updatedCorrectAnswerCount = 0;
           level = level + 1;
         }
-        this.setState({ correctAnswerCount: updatedCorrectAnswerCount, questionString: questionString, 
-                        timeRemaining: 7, showGameOverMessage: false, level: level, score: updatedScore });    
+        let totalCorrectAnswerCount = this.state.levelCorrectAnswerCount === 0 && this.state.level === 1 ? updatedCorrectAnswerCount : this.state.totalCorrectAnswerCount + 1;
+        
+        this.setState({ levelCorrectAnswerCount: updatedCorrectAnswerCount, questionString: questionString, 
+                        timeRemaining: 7, showGameOverMessage: false, level: level, score: updatedScore, totalCorrectAnswerCount: totalCorrectAnswerCount});    
         this.timerHandle = setInterval(() => { this.setState({timeRemaining: this.state.timeRemaining - 1})}, 1000);
+        answerElement.value = "";
       } else {
-        this.resetScore();
+        this.gameOver();
       }
-      answerElement.value = "";
+      
     }
   }
 
   render() {
+    let progressToFocusPercent = Math.floor(this.state.totalCorrectAnswerCount*100/25);   
+
+
     return (
       <div className="App">
         <header className="App-header">          
           <h1 className="App-title">MAHABODMAS</h1>          
-          <h5> Are you the WhizKid of mental math?</h5>
+          <h5> A Mental Math game to get your mind to focus</h5>
         </header>
         <div className="App-intro">
           <div className="row">
@@ -97,7 +121,7 @@ class App extends Component {
               <p>Level: {this.state.level}</p>
             </div>
             <div className="col-6 center">
-              <p>Correct:  {this.state.correctAnswerCount}/7</p>  
+              <p>Correct:  {this.state.levelCorrectAnswerCount}/7</p>  
             </div>            
             <div className="col-3 right">
               <p>Score: {this.state.score}</p>
@@ -111,11 +135,18 @@ class App extends Component {
           </div> 
           <br />
           <div className="row">
-            <div className="col-6">
+            <div className="col-2">
               <p>Time:  {this.state.timeRemaining}</p>
-            </div>              
-          </div>                     
-          <GameOverMessage show={this.state.showGameOverMessage} highscore={this.state.highscore} yourscore={this.state.yourscore} />                      
+            </div>                          
+          </div> 
+          <div className="row">
+            <div className="col-12">
+              <p>Your Focus Percentage:</p>            
+              <Progress percent={progressToFocusPercent} />             
+            </div>
+          </div>
+
+          <GameOverMessage show={this.state.showGameOverMessage} highscore={this.state.highscore} yourscore={this.state.yourscore} reset={this.restart}/>                      
         </div>
       </div>
     );
