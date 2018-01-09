@@ -26,7 +26,8 @@
 
 .App-intro {
   font-size: large;
-  width: 480px;
+  width: 100%;
+  max-width: 480px;
   margin: auto;
   text-align: left;
 }

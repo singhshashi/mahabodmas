@@ -66,7 +66,7 @@ class App extends Component {
   restart = () => {    
     let answerElement = document.getElementById('txtAnswer');
     answerElement.value = '';    
-    this.setState({timeRemaining: 0, levelCorrectAnswerCount: 0, score: 0, level: 1, showGameOverMessage: false });
+    this.setState({timeRemaining: 0, levelCorrectAnswerCount: 0, totalCorrectAnswerCount:0, score: 0, level: 1, showGameOverMessage: false });
     answerElement.focus();
   }
 
@@ -117,13 +117,13 @@ class App extends Component {
         </header>
         <div className="App-intro">
           <div className="row">
-            <div className="col-3">
+            <div className="col-3-sm">
               <p>Level: {this.state.level}</p>
             </div>
-            <div className="col-6 center">
+            <div className="col-6-sm center">
               <p>Correct:  {this.state.levelCorrectAnswerCount}/7</p>  
             </div>            
-            <div className="col-3 right">
+            <div className="col-3-sm right">
               <p>Score: {this.state.score}</p>
             </div>
           </div>
@@ -135,12 +135,12 @@ class App extends Component {
           </div> 
           <br />
           <div className="row">
-            <div className="col-2">
+            <div className="col-2-sm">
               <p>Time:  {this.state.timeRemaining}</p>
             </div>                          
           </div> 
           <div className="row">
-            <div className="col-12">
+            <div className="col-12-sm">
               <p>Your Focus Percentage:</p>            
               <Progress percent={progressToFocusPercent} />             
             </div>

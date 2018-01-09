@@ -28,20 +28,23 @@ class GameOverMessage extends Component {
         return (
             <div>
                 <div className="row">
-                    <div className="col-8">
+                    <div className="col-10-sm">
                         <p className="deadMsg">
-                            {this.getGameOverMessage()}
+                            Game Over: {this.getGameOverMessage()}
                     </p>
                     </div>
-                    <div className="col-4 right">
-                        <a href="#" onClick={this.props.reset}>Reset</a>
+                    <div className="col-2-sm right">
+                    <p>
+                        <button href="#" onClick={this.props.reset}>Reset</button>
+                    </p>
+                        
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-6-sm">
                         <p>Your score: {this.props.yourscore}</p>
                     </div>
-                    <div className="col-6 right">
+                    <div className="col-6-sm right">
                         <p>Highscore: {this.props.highscore}</p>
                     </div>
                 </div>
