@@ -78,7 +78,7 @@ class App extends Component {
   }
 
   handleAnswerKeyPress = (evt) => {    
-    if (evt.charCode === 13) {      
+    if (evt.charCode === 13 && !this.state.showGameOverMessage) {      
       var userAnswer = parseInt(evt.target.value);
       const actualAnswer = eval(this.state.questionString);      
       let questionString = this.generateQuestion();
