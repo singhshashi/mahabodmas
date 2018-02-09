@@ -111,7 +111,8 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">          
+        <div className="trici-link"><a href="https://www.gettrici.com">Go to gettrici.com</a></div>         
+        <header className="App-header">           
           <h1 className="App-title">MAHABODMAS</h1>          
           <h5> A Mental Math game to get your mind to focus</h5>
         </header>

@@ -14,10 +14,20 @@
   color: white;
 }
 
+.trici-link {
+  background-color: #222;
+  text-align: right;
+  color: beige;
+}
+
+.trici-link > a {
+  color: beige;
+}
+
 .App-title {
   font-size: 2em;
   color:crimson;
-  font-family:cursive;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .App-header > h5 {
